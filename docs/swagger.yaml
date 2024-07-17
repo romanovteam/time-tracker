@@ -1,0 +1,214 @@
+basePath: /
+definitions:
+  models.Task:
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+      taskID:
+        type: integer
+      userID:
+        type: integer
+    type: object
+  models.User:
+    properties:
+      address:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      passportNumber:
+        type: string
+      passportSerie:
+        type: string
+      patronymic:
+        type: string
+      surname:
+        type: string
+    type: object
+  models.WorkLog:
+    properties:
+      hours:
+        type: number
+      taskID:
+        type: integer
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: This is a time tracker server.
+  title: Time Tracker API
+  version: "1.0"
+paths:
+  /tasks/start:
+    post:
+      consumes:
+      - application/json
+      description: Start a task for a user
+      parameters:
+      - description: Task
+        in: body
+        name: task
+        required: true
+        schema:
+          $ref: '#/definitions/models.Task'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Task'
+      summary: Start a task for a user
+      tags:
+      - tasks
+  /tasks/stop:
+    post:
+      consumes:
+      - application/json
+      description: Stop a task for a user
+      parameters:
+      - description: Task
+        in: body
+        name: task
+        required: true
+        schema:
+          $ref: '#/definitions/models.Task'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Task'
+      summary: Stop a task for a user
+      tags:
+      - tasks
+  /users:
+    get:
+      description: Get all users with filtering and pagination
+      parameters:
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      - description: Offset
+        in: query
+        name: offset
+        type: integer
+      - description: Filter
+        in: query
+        name: filter
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.User'
+            type: array
+      summary: Get all users with filtering and pagination
+      tags:
+      - users
+    post:
+      consumes:
+      - application/json
+      description: Add a new user and enrich data from external API
+      parameters:
+      - description: User
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.User'
+      summary: Add a new user
+      tags:
+      - users
+  /users/{id}:
+    delete:
+      description: Delete a user by ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully deleted
+          schema:
+            type: string
+      summary: Delete a user by ID
+      tags:
+      - users
+    put:
+      consumes:
+      - application/json
+      description: Update a user's information
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: User
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+      summary: Update a user's information
+      tags:
+      - users
+  /worklogs:
+    get:
+      description: Get work logs for a user within a specific period
+      parameters:
+      - description: User ID
+        in: query
+        name: user_id
+        required: true
+        type: integer
+      - description: Start Date
+        in: query
+        name: start_date
+        required: true
+        type: string
+      - description: End Date
+        in: query
+        name: end_date
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.WorkLog'
+            type: array
+      summary: Get work logs for a user
+      tags:
+      - worklogs
+swagger: "2.0"

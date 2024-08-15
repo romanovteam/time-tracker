@@ -28,6 +28,10 @@ func Migrate(db *sql.DB) {
         FOREIGN KEY (user_id) REFERENCES users(id)
     );`
 
+	taskDescription := `
+    ALTER TABLE tasks
+    ADD COLUMN IF NOT EXISTS description TEXT;`
+
 	_, err := db.Exec(userTable)
 	if err != nil {
 		log.Fatalf("Failed to execute migration for users table: %v", err)
@@ -36,6 +40,11 @@ func Migrate(db *sql.DB) {
 	_, err = db.Exec(workLogTable)
 	if err != nil {
 		log.Fatalf("Failed to execute migration for work_logs table: %v", err)
+	}
+
+	_, err = db.Exec(taskDescription)
+	if err != nil {
+		log.Fatalf("Failed to add description column to tasks table: %v", err)
 	}
 
 	fmt.Println("Migrations executed successfully")

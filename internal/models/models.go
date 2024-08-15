@@ -16,10 +16,10 @@ type WorkLog struct {
 }
 
 type Task struct {
-	ID          int    `json:"id"`
-	UserID      int    `json:"userID"`
-	TaskID      int    `json:"taskID"`
-	Description string `json:"description"`
+	ID          int     `json:"id"`
+	UserID      int     `json:"userID"`
+	TaskID      int     `json:"taskID"`
+	Description *string `json:"description,omitempty"`
 }
 
 type People struct {
